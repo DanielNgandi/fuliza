@@ -1,0 +1,24 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Payment {
+  id               String   @id @default(cuid())
+  phone            String
+  amount           Int
+  packageName      String
+  checkoutId       String   @unique
+  status           String   @default("PENDING")
+  mpesaCheckoutId  String?  @unique  // Store M-Pesa CheckoutRequestID
+  mpesaResultCode  Int?              // Store M-Pesa result code (0 = success)
+  mpesaResultDesc  String?           // Store M-Pesa result description
+  mpesaMetadata    Json?             // Store additional M-Pesa metadata
+  transactionId    String?           // Store M-Pesa transaction ID
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
